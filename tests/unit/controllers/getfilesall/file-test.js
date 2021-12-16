@@ -1,12 +1,12 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 
-module('Unit | Controller | getfiles', function (hooks) {
+module('Unit | Controller | getfilesall/file', function (hooks) {
   setupTest(hooks);
 
   // TODO: Replace this with your real tests.
   test('it exists', function (assert) {
-    let controller = this.owner.lookup('controller:getfiles');
+    let controller = this.owner.lookup('controller:getfilesall/file');
     assert.ok(controller);
   });
 });

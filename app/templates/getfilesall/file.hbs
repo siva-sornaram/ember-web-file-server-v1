@@ -1,29 +1,33 @@
 {{page-title "File"}}
-{{outlet}}<table style="border: 1px solid; margin-left: 100px;">
+{{outlet}}<table style="margin-left: 30px;">
   <tr>
     <th style="padding: 5px 10px 5px 10px">Sl.No</th>
     <th style="padding: 5px 10px 5px 10px">File Name</th>
+    <th style="padding: 5px 10px 5px 10px">Size</th>
+    <th style="padding: 5px 10px 5px 10px">Last Modified</th>
   </tr>
   {{#each @model as |file|}}
-        <tr id="{{file-id}}">
+        <tr id="{{file.id}}">
           <td style="padding: 5px 10px 5px 10px">{{file.id}}</td>
             {{#if file.isDir}}
-                <LinkTo @route = 'getfilesall.files' @model = {{file.filePath}} >{{file.fname}}</LinkTo>
+                <LinkTo @route = 'getfilesall.files' @model = {{file.filePath}} @invokeAction = {{fn this.save_filepath file.filePath}} class="button-link" style="padding-left: 10px;"><strong>{{file.fname}}/</strong></LinkTo>
             {{else}}
-              <td style="padding: 5px 10px 5px 10px" id="fname-{{file.fname}}"><a href="http://localhost:8081/downloadfiles?filename={{file.filePath}}">{{file.fname}}</a></td>
+              <td style="padding: 5px 10px 5px 10px" id="fname-{{file.fname}}"><a href="/downloadfiles?filename={{file.filePath}}"><strong>{{file.fname}}</strong></a></td>
             {{/if}}
+            <td style="padding: 5px 10px 5px 10px">{{sizer file.size}}</td>
+            <td style="padding: 5px 10px 5px 10px">{{file.lmod}}</td>
         </tr>
   {{/each}}
 </table>
 
-{{!-- <h3>{{filepathvar}}</h3> --}}
+{{!-- <h3>{{this.filepathtitle}}</h3> --}}
 
 <table style="padding: 5px 10px 5px 10px">
   <tr>
     <td>
-      <form action="http://localhost:8081/uploadfiles" method="post" enctype="multipart/form-data">
+      <form action="/uploadfiles" method="post" enctype="multipart/form-data">
         <p>Select File : </p> <input type="file" name="file" multiple />
-        <input type="hidden" name="relpath" value={{filepathvar}}>
+        <input type="hidden" name="relpath" value={{this.filepathtitle}}>
         <input id="uploadbutton" type="submit" value="Upload Files"/>
       </form>
     </td>
