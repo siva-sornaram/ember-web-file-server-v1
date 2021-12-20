@@ -7,8 +7,6 @@ export default class Router extends EmberRouter {
 }
 
 Router.map(function () {
-  this.route('getfilesall', function () {
-    this.route('files', { path: '/*path' });
-    this.route('file', { path: '/' });
-  });
+  this.route('files', { path: '/' });
+  this.route('files', { path: '/*path' });
 });

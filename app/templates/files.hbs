@@ -1,0 +1,64 @@
+{{page-title "Files"}}
+
+
+<h1>Index of /{{filepathtitle}}</h1>
+
+<hr>
+
+<table style="margin-left: 30px;">
+  <tr>
+    <th style="padding: 5px 10px 5px 10px">Sl.No</th>
+    <th style="padding: 5px 10px 5px 10px">File Name</th>
+    <th style="padding: 5px 10px 5px 10px">Size</th>
+    <th style="padding: 5px 10px 5px 10px">Last Modified</th>
+  </tr>
+  {{#if (isfilepath filepathtitle)}}
+  <tr>
+      <td style="padding: 5px 10px 5px 10px">0</td>
+      {{!-- <td><button class="button-link" type="button" {{on 'click' (fn go_back filepathtitle)}}><img src="/assets/images/back-ios.png" style="width: 25px; height: auto; padding: 0px 5px 0px;"><strong>Parent Folder</strong></button></td> --}}
+      <td><LinkTo @route = 'files' @model = "{{goback filepathtitle}}" class="button-link" style="padding-left: 10px;"><img src="/assets/images/folder-ios.png" style="width: 25px; height: auto; padding: 0px 5px 0px;"><img src="/assets/images/back-ios.png" style="width: 25px; height: auto; padding: 0px 5px 0px;"><strong>Parent Folder</strong></LinkTo></td>
+  </tr>
+  {{/if}}
+  {{#each @model as |file|}}
+        <tr id="{{file.id}}"> 
+          <td style="padding: 5px 10px 5px 10px">{{file.id}}</td>
+            {{#if file.isDir}}
+                {{!-- @invokeAction = {{fn this.save_filepath file.filePath}} --}}
+                <LinkTo @route = 'files' @model = "{{file.filePath}}" class="button-link" style="padding-left: 10px;"><img src="/assets/images/folder-ios.png" style="width: 25px; height: auto; padding: 0px 5px 0px;"><strong>{{file.fname}}/</strong></LinkTo>
+            {{else}}
+              <td style="padding: 5px 10px 5px 10px" id="fname-{{file.fname}}"><img src="/assets/images/file-ios.png" style="width: 25px; height: auto; padding: 0px 5px 0px;"><a href="/downloadfiles?filename={{file.filePath}}"><strong>{{file.fname}}</strong></a></td>
+            {{/if}}
+            <td style="padding: 5px 10px 5px 10px">{{sizer file.size}}</td>
+            <td style="padding: 5px 10px 5px 10px">{{file.lmod}}</td>
+        </tr>
+  {{/each}}
+</table>
+
+<h3>{{filepathtitle}}</h3>
+
+
+<table style="padding: 5px 10px 5px 10px">
+  <tr>
+    <td>
+      <form action="/uploadfiles" method="post" enctype="multipart/form-data">
+        <p>Select File : </p> <input type="file" name="file" multiple />
+        <input type="hidden" name="relpath" value={{filepathtitle}}>
+        <input id="uploadbutton" type="submit" value="Upload Files"/>
+      </form>
+    </td>
+  </tr>
+</table>
+
+<table style="padding: 5px 10px 5px 10px">
+  <tr>
+    <td>
+      <form action="/createfolder" method="post">
+        <p>Folder Name : </p><input type="text" name="foldername">
+        <input type="hidden" name="relpath" value={{filepathtitle}}>
+        <input id="createfolderbutton" type="submit" value="Create Folder"/>
+      </form>
+    </td>
+  </tr>
+</table>
+
+<hr>
