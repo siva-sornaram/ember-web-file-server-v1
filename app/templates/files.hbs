@@ -2,8 +2,9 @@
 
 {{notification-container position="top" zindex="9999"}}
 
-<h1>Index of {{filepathdisplay}}</h1>
-
+<div class="page-header">
+  <h1>Index of {{filepathdisplay}}</h1>
+</div>
 <hr>
 
 <table style="margin-left: 30px;">
@@ -17,7 +18,7 @@
   <tr>
       <td style="padding: 5px 10px 5px 10px">0</td>
       {{!-- <td><button class="button-link" type="button" {{on 'click' (fn go_back filepathtitle)}}><img src="/assets/images/back-ios.png" style="width: 25px; height: auto; padding: 0px 5px 0px;"><strong>Parent Folder</strong></button></td> --}}
-      <td><LinkTo @route = 'files' @model = "{{goback filepathtitle}}" class="button-link" style="padding-left: 10px;"><img src="/assets/images/back-ios.png" style="width: 25px; height: auto; padding: 0px 5px 0px;"><strong>Parent Folder</strong></LinkTo></td>
+      <td><LinkTo @route = 'files' @model = "{{goback filepathtitle}}" class="btn-link" style="padding-left: 10px;"><img src="/assets/images/back-ios.png" style="width: 25px; height: auto; padding: 0px 5px 0px;"><strong>Parent Folder</strong></LinkTo></td>
   </tr>
   {{/if}}
   {{#each @model as |file|}}
@@ -25,7 +26,7 @@
           <td style="padding: 5px 10px 5px 10px">{{file.id}}</td>
             {{#if file.isDir}}
                 {{!-- @invokeAction = {{fn this.save_filepath file.filePath}} --}}
-                <LinkTo @route = 'files' @model = "{{file.filePath}}" class="button-link" style="padding-left: 10px;"><img src="/assets/images/folder-ios.png" style="width: 25px; height: auto; padding: 0px 5px 0px;"><strong>{{file.fname}}/</strong></LinkTo>
+                <LinkTo @route = 'files' @model = "{{file.filePath}}" class="btn-link" style="padding-left: 10px;"><img src="/assets/images/folder-ios.png" style="width: 25px; height: auto; padding: 0px 5px 0px;"><strong>{{file.fname}}/</strong></LinkTo>
             {{else}}
               <td style="padding: 5px 10px 5px 10px" id="fname-{{file.fname}}"><img src="/assets/images/file-ios.png" style="width: 25px; height: auto; padding: 0px 5px 0px;"><a href="/downloadfiles?filename={{file.filePath}}"><strong>{{file.fname}}</strong></a></td>
             {{/if}}
@@ -34,38 +35,27 @@
         </tr>
   {{/each}}
 </table>
+<br>
 
 <h3>{{filepathdisplay}}</h3>
 
 <hr>
-
-
-<table style="padding: 5px 10px 5px 10px">
-  <tr>
-    <td>
       <form action="/uploadfiles" method="post" enctype="multipart/form-data">
-        <p>Select File : </p> <input type="file" name="file" multiple />
+        <label class="control-label col-sm-2"><strong>Select File :</strong></label><input type="file" name="file" multiple />
         <input type="hidden" name="relpath" value={{filepathtitle}}>
-        <input id="uploadbutton" type="submit" value="Upload Files"/>
+        <input id="uploadbutton" type="submit" value="Upload Files" class="btn btn-primary btn-sm"/>
       </form>
-    </td>
-  </tr>
-</table>
 
-<table style="padding: 5px 10px 5px 10px" >
-        <tr>
-            <td>
-                <label>Folder Name : </label>
-            </td>
-            <td>
-                {{ input type = "text" id = "foldername" value = foldername name = "foldername"}}
-            </td>
-            <td>
-                {{ input type = "hidden" id = "relpath" value = (this.filepathtitle) name = "relpath"}}
-            </td>
-            <button type="submit" {{on 'click' (route-action 'create_folder') }} class="button">Create Folder</button>
-        </tr>
-    </table>
 
+<br>
+<br>
+
+<div class="form-group">
+  <label class="control-label col-sm-2"><strong>Folder Name :</strong></label>
+  {{ input type = "text" id = "foldername" value = foldername name = "foldername" placeholder="Enter the Folder Name" class="form-control input-sm col-sm-4"}}
+  {{ input type = "hidden" id = "relpath" value = (this.filepathtitle) name = "relpath"}}
+  <br>
+  <button type="submit" {{on 'click' (route-action 'create_folder') }} class="btn btn-primary btn-sm">Create Folder</button>
+</div>
 
 <hr>
