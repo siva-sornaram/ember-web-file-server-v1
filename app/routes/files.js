@@ -133,4 +133,66 @@ export default class FilesRoute extends Route {
       });
     }
   }
+
+  @action
+  upload_files() {
+    var fileObj = $('input[name="file"]').get(0).files;
+    var relPath = this.filepathtitle;
+    var rsObj = '';
+
+    var formData = new FormData();
+    console.log('fileObj : ', fileObj, 'type : ', typeof(fileObj), 'relPath : ', relPath);
+
+    
+    Object.keys(fileObj).forEach(key => {
+      formData.append('file', fileObj[key]);
+    });
+    formData.append('relpath', relPath);
+
+    for (var key of formData.entries()) {
+      console.log(key[0], ', ', key[1]);
+    }
+    
+    console.log('formdata : ', formData);
+
+    var result = $.ajax({
+      type: 'POST',
+      url: '/uploadfiles/',
+      data: formData,
+      cache: false,
+      contentType: false,
+      processData: false,
+      async: false,
+      global: false,
+      success: function (dat) {
+        console.log('dat : ', dat);
+        rsObj = dat;
+        return dat;
+      },
+      error: function (err) {
+        console.log(err);
+      },
+    }).responseText;
+
+    console.log('rsObj : ', rsObj);
+    if (rsObj.status == 'success') {
+      this.refresh();
+      this.notifications.success('Files have been uploaded successfully', {
+        autoClear: true,
+        clearDuration: 3000
+      });
+    } else if (rsObj.status == 'empty') {
+      this.refresh();
+      this.notifications.error('Files List cannot be empty', {
+        autoClear: true,
+        clearDuration: 3000
+      });
+    } else {
+      this.refresh();
+      this.notifications.error('Files have not been uploaded', {
+        autoClear: true,
+        clearDuration: 3000
+      });
+    }
+  }
 }

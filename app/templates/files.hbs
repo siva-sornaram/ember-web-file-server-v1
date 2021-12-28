@@ -40,11 +40,19 @@
 <h3>{{filepathdisplay}}</h3>
 
 <hr>
-      <form action="/uploadfiles" method="post" enctype="multipart/form-data">
+      {{!-- <form action="/uploadfiles" method="post" enctype="multipart/form-data">
         <label class="control-label col-sm-2"><strong>Select File :</strong></label><input type="file" name="file" multiple />
         <input type="hidden" name="relpath" value={{filepathtitle}}>
         <input id="uploadbutton" type="submit" value="Upload Files" class="btn btn-primary btn-sm"/>
-      </form>
+      </form> --}}
+
+      <div class="form-group">
+      <label class="control-label col-sm-2"><strong>Select File :</strong></label>
+      <input id="file-input" type="file" name="file" multiple />
+      {{ input type = "hidden" id = "relpath" value = (this.filepathtitle) name = "relpath"}}
+      <br>
+      <button type="submit" {{on 'click' (route-action 'upload_files') }} class="btn btn-primary btn-sm">Upload Files</button>
+      </div>
 
 
 <br>
